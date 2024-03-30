@@ -13,6 +13,10 @@ RUN su -c "sh <(curl -sS https://starship.rs/install.sh) -y"
 RUN echo 'eval "$(starship init bash)"'> ~/.bashrc
 # TODO - Add startship configuration.
 
+# Configure git
+RUN git config --global user.email "matt@mttwlsn.com"
+RUN git config --global user.name "Matt Wilson"
+
 # Add other system dependencies
 
 WORKDIR /app
