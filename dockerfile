@@ -14,8 +14,12 @@ RUN echo 'eval "$(starship init bash)"'> ~/.bashrc
 # TODO - Add startship configuration.
 
 # Configure git
+RUN apk add openssh-client
 RUN git config --global user.email "matt@mttwlsn.com"
 RUN git config --global user.name "Matt Wilson"
+RUN mkdir ~/.ssh && ssh-keyscan github.com >> ~/.ssh/known_hosts
+# To use SSH mount your host ssh key to the container
+# -v ~/.ssh/github:/root/.ssh
 
 # Add other system dependencies
 
