@@ -11,7 +11,7 @@ ENV PATH="${PATH}:/root/.local/bin"
 # Add Starship for shell customization.
 RUN su -c "sh <(curl -sS https://starship.rs/install.sh) -y"
 RUN echo 'eval "$(starship init bash)"'> ~/.bashrc
-# TODO - Add startship configuration.
+RUN curl -L "https://raw.githubusercontent.com/mtt-wlsn/dotfiles/main/starship.toml" > /root/.config/starship.toml
 
 # Configure git
 RUN apk add openssh-client
