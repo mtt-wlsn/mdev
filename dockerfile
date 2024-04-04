@@ -28,6 +28,9 @@ RUN git config --global user.name "Matt Wilson"
 # To use SSH mount your host ssh key to the container
 # -v ~/.ssh/github:/root/.ssh
 
+# # Harlequin (SQL IDE for the terminal)
+RUN pip install harlequin-postgres
+
 # Add other system dependencies
 
 WORKDIR /app
