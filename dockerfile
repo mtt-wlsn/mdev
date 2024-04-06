@@ -1,8 +1,12 @@
 FROM ubuntu:latest
 
-RUN apt update
-RUN apt upgrade -y
-RUN apt install git make python3 pip nodejs npm yarn cargo ripgrep curl -y
+RUN apt-get update
+RUN apt-get upgrade -y
+RUN apt-get install git make python3 pip cargo ripgrep curl -y
+
+# Add NVM for Node management
+RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
+RUN ["/bin/bash", "-c", ". /root/.nvm/nvm.sh && source /root/.bashrc && nvm install --lts"]
 
 # Add Lunar Vim for code IDE.
 # First add neovim as Lunar Vim depends on it.  We cannot use the apt package as we need a more recent version.
