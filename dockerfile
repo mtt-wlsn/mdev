@@ -20,7 +20,6 @@ RUN echo 'export PATH="$PATH:~/.local/bin"' >> ~/.bashrc
 RUN LV_BRANCH='release-1.3/neovim-0.9' su -c "bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/release-1.3/neovim-0.9/utils/installer/install.sh) --no-install-dependencies"
 RUN curl -L "https://raw.githubusercontent.com/mtt-wlsn/dotfiles/main/config.lua" > /root/.config/lvim/config.lua
 
-
 # Add Starship for shell customization.
 RUN su -c "sh <(curl -sS https://starship.rs/install.sh) -y"
 RUN echo 'eval "$(starship init bash)"' >> ~/.bashrc
@@ -36,5 +35,15 @@ RUN git config --global user.name "Matt Wilson"
 RUN pip install harlequin-postgres
 
 # Add other system dependencies
+
+# For dotnet development
+# Add the dotnet sdk
+# RUN apt install -y dotnet-sdk-8.0
+
+# Add the dotnet debugger
+# RUN curl -LO https://github.com/Samsung/netcoredbg/releases/download/3.1.0-1031/netcoredbg-linux-amd64.tar.gz
+# RUN tar -C . -xzf netcoredbg-linux-amd64.tar.gz
+# RUN mv netcoredbg ~/.local/bin/
+# RUN rm -rf netcoredbg-linux-amd64.tar.gz
 
 WORKDIR /app
