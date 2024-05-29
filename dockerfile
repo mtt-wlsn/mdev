@@ -18,9 +18,7 @@ RUN apt-get install git make python3 pip cargo ripgrep curl -y
 RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | bash
 RUN ["/bin/bash", "-c", ". /root/.nvm/nvm.sh && source /root/.bashrc && nvm install --lts"]
 
-# Add Lunar Vim for code IDE.
-# First add neovim as Lunar Vim depends on it.  We cannot use the apt package as we need a more recent version.
-# Then install LunarVim and the users configuration.
+# Add neovim.  We cannot use the apt package as we need a more recent version.
 RUN if [ $IDE_CONFIG_URL ]; then \
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz && \
     tar -C . -xzf nvim-linux64.tar.gz && \
@@ -28,8 +26,12 @@ RUN if [ $IDE_CONFIG_URL ]; then \
     rm -rf nvim-linux64.tar.gz && \
     rm -rf nvim-linux64 && \
     echo 'export PATH="$PATH:~/.local/bin"' >> ~/.bashrc && \
-    LV_BRANCH='release-1.3/neovim-0.9' su -c "bash <(curl -s https://raw.githubusercontent.com/lunarvim/lunarvim/release-1.3/neovim-0.9/utils/installer/install.sh) --no-install-dependencies" && \
-    curl -L "$IDE_CONFIG_URL" > /root/.config/lvim/config.lua; \
+    # Figure out how to make the below better later.
+    curl -LO $IDE_CONFIG_URL && \
+    tar -C . -xzf v1.0.0.tar.gz && \
+    mv dotfiles-1.0.0/.config/ /root/.config/ && \
+    rm -rf dotfiles-1.0.0 && \
+    rm -rf $IDE_CONFIG_URL \
     else \
     echo IDE Setup Skipped.; \
     fi
@@ -39,7 +41,7 @@ RUN if [ $SHELL_CONFIG_URL ]; then \
     su -c "sh <(curl -sS https://starship.rs/install.sh) -y" && \
     echo 'eval "$(starship init bash)"' >> ~/.bashrc && \
     mkdir -p /root/.config && \
-    curl -L "https://raw.githubusercontent.com/mtt-wlsn/dotfiles/main/starship.toml" > /root/.config/starship.toml; \
+    curl -L $SHELL_CONFIG_URL > /root/.config/starship.toml; \
     fi
 
 # Configure git
@@ -57,13 +59,5 @@ RUN if [ "$ADD_SQL_IDE" = "true" ]; then pip install harlequin-postgres; fi
 
 # Install dotnet sdk
 RUN if [ $DOTNET_VERSION ]; then apt install -y dotnet-sdk-$DOTNET_VERSION; fi
-
-# Install dotnet debugger
-RUN if [ $DOTNET_VERSION && $IDE_CONFIG_URL ]; then \
-    curl -LO https://github.com/Samsung/netcoredbg/releases/download/3.1.0-1031/netcoredbg-linux-amd64.tar.gz && \
-    tar -C . -xzf netcoredbg-linux-amd64.tar.gz && \
-    mv netcoredbg ~/.local/bin/ && \
-    rm -rf netcoredbg-linux-amd64.tar.gz; \
-    fi
 
 WORKDIR /app
