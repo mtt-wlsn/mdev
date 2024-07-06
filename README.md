@@ -9,7 +9,7 @@ mdev is a little experiment at creating a complete developer environment from a 
    ```bash
    docker build \
        -t mdev \
-       --build-arg IDE_CONFIG_URL="https://github.com/mtt-wlsn/dotfiles/tree/main/.config/nvim" \
+       --build-arg IDE_CONFIG_URL="hhttps://github.com/mtt-wlsn/dotfiles/archive/refs/tags/v1.0.0.tar.gz" \
        --build-arg SHELL_CONFIG_URL="https://raw.githubusercontent.com/mtt-wlsn/dotfiles/main/starship.toml" \
        --build-arg GIT_EMAIL="matt@mttwlsn.com" \
        --build-arg GIT_NAME="Matt Wilson" \

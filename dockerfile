@@ -19,19 +19,19 @@ RUN curl -o- https://raw.githubusercontent.com/nvm-sh/nvm/v0.39.7/install.sh | b
 RUN ["/bin/bash", "-c", ". /root/.nvm/nvm.sh && source /root/.bashrc && nvm install --lts"]
 
 # Add neovim.  We cannot use the apt package as we need a more recent version.
-RUN if [ $IDE_CONFIG_URL ]; then \
+RUN set -e; \
+    if [ -n "$IDE_CONFIG_URL" ]; then \
     curl -LO https://github.com/neovim/neovim/releases/latest/download/nvim-linux64.tar.gz && \
     tar -C . -xzf nvim-linux64.tar.gz && \
     mv nvim-linux64/ ~/.local/ && \
     rm -rf nvim-linux64.tar.gz && \
     rm -rf nvim-linux64 && \
     echo 'export PATH="$PATH:~/.local/bin"' >> ~/.bashrc && \
-    # Figure out how to make the below better later.
     curl -LO $IDE_CONFIG_URL && \
     tar -C . -xzf v1.0.0.tar.gz && \
     mv dotfiles-1.0.0/.config/ /root/.config/ && \
     rm -rf dotfiles-1.0.0 && \
-    rm -rf $IDE_CONFIG_URL \
+    rm -rf v1.0.0.tar.gz \
     else \
     echo IDE Setup Skipped.; \
     fi
