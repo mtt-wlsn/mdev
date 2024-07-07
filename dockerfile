@@ -60,4 +60,8 @@ RUN if [ "$ADD_SQL_IDE" = "true" ]; then pip install harlequin-postgres; fi
 # Install dotnet sdk
 RUN if [ $DOTNET_VERSION ]; then apt install -y dotnet-sdk-$DOTNET_VERSION; fi
 
+# Expose popular development ports
+# 5173 = Vite
+EXPOSE 8080 5173
+
 WORKDIR /app
